@@ -1,7 +1,8 @@
+
 #pragma once
 
 
-//#include<store.h>
+#include<store.h>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -25,13 +26,17 @@ int main()
 		int custmer_ID;
 		int rating;
 		int book_ID;
-	
+
 	};
-	//store Ratings into vector need to adjust it a liitle bit
+	//store Ratings into vector need to adjust it a liitle bit, do not remember how to store struct into vector
 	vector<Rating>list_rating;
 	int i = 0;
 	// 
-	
+	while (fin >> Rating)
+	{
+		list_rating[i] = Rating;
+		i++;
+	}
 
 	map<string, string> books; // h
 	string book_title; // h
@@ -97,6 +102,7 @@ fout << V->first << ",  " << V->second << endl;
 system("pause");
 return 0;*/
 }
+
 
 
 
