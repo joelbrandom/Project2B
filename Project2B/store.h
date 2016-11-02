@@ -5,13 +5,22 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include<map>
-#include<vector>
+#include <map>
+#include <vector>
 using namespace std;
 
-
-int main()
+struct Rating
 {
+	int custmer_ID;
+	int rating;
+	int book_ID;
+
+};
+
+/*
+	Below are the beginnings of possible functions to be used
+	(what used to be in main())
+
 	// File I/O
 	ifstream fin("books.txt");
 	ofstream fout("books_output.txt");
@@ -20,18 +29,11 @@ int main()
 	ifstream fin("ratings.txt");
 	ofstream fout("ratings_output.txt");
 
-	struct Rating
-	{
-		int custmer_ID;
-		int rating;
-		int book_ID;
-	
-	};
 	//store Ratings into vector need to adjust it a liitle bit
 	vector<Rating>list_rating;
 	int i = 0;
-	// 
-	
+	//
+
 
 	map<string, string> books; // h
 	string book_title; // h
@@ -52,22 +54,40 @@ int main()
 		books[ISBN] = book_title;
 
 	}
-	//function that finds book title by isbn number, if it is not there it will return Error (cpp)
-	string find_a_title_by_isbn(string new_isbn)
+
+*/
+
+//store Ratings into vector need to adjust it a liitle bit
+vector<Rating>list_rating;
+int i = 0;
+//
+
+
+map<string, string> books; // h
+string book_title; // h
+string ISBN; // h
+
+map<int, string> customers; //h
+int ID; // h
+string Name; // h
+map<string, string>::iterator V;// h
+map<int, string>::iterator K;// h
+
+//function that finds book title by isbn number, if it is not there it will return Error (cpp)
+string find_a_title_by_isbn(string new_isbn)
+{
+
+	for (map<string, string>::iterator V = books.begin(); V != books.end(); V++)
 	{
-
-		for (map<string, string>::iterator V = books.begin(); V != books.end(); V++)
+		if (V->first == new_isbn)
 		{
-			if (V->first == new_isbn)
-			{
-				return V->second;
+			return V->second;
 
-			}
-			return "Error";
 		}
+		return "Error";
 	}
-
 }
+
 // can make it a function to read in id and names from the file (cpp)
 while (fin >> ID >> Name)
 {
@@ -95,9 +115,6 @@ string find_name_by_id(int new_id)
 fout << V->first << ",  " << V->second << endl;
 }
 system("pause");
-return 0;*/
+return 0;
 }
-
-
-
-
+*/

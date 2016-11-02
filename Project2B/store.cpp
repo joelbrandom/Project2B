@@ -2,12 +2,12 @@
 #pragma once
 
 
-#include<store.h>
+//#include "store.h"
 #include <fstream>
 #include <iostream>
 #include <string>
-#include<map>
-#include<vector>
+#include <map>
+#include <vector>
 using namespace std;
 
 
@@ -31,7 +31,7 @@ int main()
 	//store Ratings into vector need to adjust it a liitle bit, do not remember how to store struct into vector
 	vector<Rating>list_rating;
 	int i = 0;
-	// 
+	//
 	while (fin >> Rating)
 	{
 		list_rating[i] = Rating;
@@ -100,10 +100,6 @@ string find_name_by_id(int new_id)
 fout << V->first << ",  " << V->second << endl;
 }
 system("pause");
-return 0;*/
+return 0;
 }
-
-
-
-
-
+*/
