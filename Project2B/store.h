@@ -84,16 +84,20 @@ string find_a_title_by_isbn(string new_isbn)
 			return V->second;
 
 		}
-		return "Error";
+		//return "Error";
 	}
+	return "Error";
 }
 
-// can make it a function to read in id and names from the file (cpp)
-while (fin >> ID >> Name)
-{
-	customers[ID] = Name;
+/*
+	// can make it a function to read in id and names from the file (cpp)
+	while (fin >> ID >> Name)
+	{
+		customers[ID] = Name;
 
-}
+	}
+*/
+
 //function that finds book title by isbn number, if it is not there it will return Error (cpp)
 string find_name_by_id(int new_id)
 {
@@ -105,8 +109,9 @@ string find_name_by_id(int new_id)
 			return K->second;
 
 		}
-		return "Error";
+		//return "Error";
 	}
+	return "Error: not found";
 }
 
 
