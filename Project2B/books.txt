@@ -86,7 +86,7 @@
 035221410, On the Road by Jack Kerouac
 050587710, The Master and Margarita by Mikhail Bulgakov
 964960134, The Castle by Franz Kafka
-012563374, Father Goriot by HonorÃ© de Balzac
+012563374, Father Goriot by Honoré de Balzac
 702464283, Stories of Ernest Hemingway by Ernest Hemingway
 764413204,  Robinson Crusoe by Daniel Defoe
 699480416, Collected Poems of W. B. Yeats by W. B. Yeats
@@ -166,7 +166,7 @@
 014369962, The Stories of John Cheever by John Cheever
 625617407, Little Women by Louisa May Alcott
 146956317, Steppenwolf by Hermann Hesse
-219421307, Eugenie Grandet by HonorÃ© de Balzac
+219421307, Eugenie Grandet by Honoré de Balzac
 651938759, Macbeth by William Shakespeare
 682680387, Gravity's Rainbow  by Thomas Pynchon
 051692205, A Tale of Two Cities by Charles Dickens
