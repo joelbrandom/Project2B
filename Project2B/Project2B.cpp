@@ -9,13 +9,11 @@
 
 int main()
 {
-  populateRatingVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/ratings.txt");
-  populateMap(booksMap, "/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
-  populateMap(customersMap, "/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
+  populateRatingVector("ratings.txt");
 
-  populateCustomerVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
+  populateCustomerVector("customers.txt");
 
-  populateBooksBST("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
+  populateBooksBST("books.txt");
 
   //std::cout << booksByTitle << '\n';
 
