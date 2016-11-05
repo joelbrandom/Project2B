@@ -28,7 +28,33 @@ struct Rating
 	}
 };
 
+struct Book
+{
+	int isbn;
+	string title;
+	bool sortByISBN;
+
+	Book (int a, string b, bool c)
+	{
+		isbn = a;
+		title = b;
+		sortByISBN = c;
+	}
+	Book ()
+	{
+	}
+
+	bool operator>(const Book& compare) const
+	{
+		if (this->sortByISBN)
+			return (this->isbn > compare.isbn);
+		else
+			return (this->title > compare.title);
+	}
+};
+
 vector<Rating> ratingVector;
+vector<string> customerVector;
 map<int, string> booksMap, customersMap;
 
 // Store ratings into a vector
@@ -54,6 +80,26 @@ void populateRatingVector(const string& source)
 			}
 		}
 		ifs.close();
+	}
+}
+
+void populateCustomerVector(const string& source)
+{
+	ifstream ifs(source);
+	if (ifs)
+	{
+		string name, line;
+
+		while (getline(ifs, line))
+		{
+			regex re(", (.*)");
+			smatch match;
+			if (regex_search(line, match, re) && match.size() > 1)
+			{
+				name = match.str(1);
+				customerVector.push_back(name);
+			}
+		}
 	}
 }
 
