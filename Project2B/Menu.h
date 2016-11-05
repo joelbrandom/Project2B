@@ -89,7 +89,32 @@ void Menu::show()
 
 void Menu::ui_Search()
 {
+  std::string target;
+  bool searchByISBN;
+  std::list<string> matches;
+  std::cout << "Do you want to search by ISBN (0) or title (1)?\n";
+  std::cin >> searchByISBN;
+  std::cout << "Please enter your search:\n";
+  std::getline(std::cin, target);
+  if (searchByISBN)
+    booksByISBN.search(target, matches);
+  else
+    booksByTitle.search(target, matches);
 
+  if (matches.size() > 0)
+  {
+    if (matches.size() == 1)
+      std::cout << "Here is the match for your search:\n";
+    else
+      std::cout << "Here are the matches for your search:\n";
+
+    for (std::list<std::string>::const_iterator it; it != matches.end(); ++it)
+      std::cout << *it << '\n';
+  }
+  else
+  {
+    std::cout << "There were no matches for your search.\n";
+  }
 }
 
 void Menu::ui_Rate()

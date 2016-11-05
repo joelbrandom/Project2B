@@ -2,6 +2,7 @@
 #define BINARY_SEARCH_TREE_H
 
 #include "Binary_Tree.h"
+#include <list>
 
 
 template<typename Item_Type>
@@ -25,6 +26,10 @@ public:
 	const Item_Type* max(BTNode<Item_Type>* local_root) const;
 
 	const Item_Type* find(const Item_Type& target) const;
+
+	// Search for an item. You do not need to specify the target's entire name.
+	const std::list<Item_Type> search(const Item_Type& target, std::list<Item_Type>& matches) const;
+
 private:
 
 	// Private Member Functions
@@ -36,6 +41,8 @@ private:
 
 	const Item_Type* find(BTNode<Item_Type>* local_root,
 		const Item_Type& target) const;
+
+	const std::list<Item_Type> search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const;
 
 	virtual void replace_parent(
 		BTNode<Item_Type>*& old_root,
@@ -93,6 +100,29 @@ const Item_Type* Binary_Search_Tree<Item_Type>::find(BTNode<Item_Type>* local_ro
 			return find(local_root->right, target);
 		else
 			return &(local_root->data);
+}
+
+template<typename Item_Type>
+const std::list<Item_Type> Binary_Search_Tree<Item_Type>::search(const Item_Type& target, std::list<Item_Type>& matches) const
+{
+	return search(this->root, target);
+}
+
+template<typename Item_Type>
+const std::list<Item_Type> Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const
+{
+	if (local_root == NULL)
+		return NULL;
+	if (target == local_root->data.substr(0, target.length()))
+	{
+		matches.push_back(local_root->data);
+		search(local_root->left, target, matches);
+		search(local_root->right, target, matches);
+	}
+	else if (target < local_root->data)
+		return search(local_root->left, target, matches);
+	else if (target > local_root->data)
+		return search(local_root->right, target, matches);
 }
 
 template<typename Item_Type>
