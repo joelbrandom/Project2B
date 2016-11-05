@@ -9,6 +9,8 @@
 
 int main()
 {
+  // populating the vectors and binary search trees
+  // these functions will be moved later on to clean up main()
   populateRatingVector("ratings.txt");
 
   populateCustomerVector("customers.txt");

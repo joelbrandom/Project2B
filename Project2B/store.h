@@ -18,6 +18,7 @@ struct Rating
 	int rating;
 	int book_ID;
 
+	// constructors for Rating
 	Rating (int custID, int rate, int bookID)
 	{
 		customer_ID = custID;
@@ -35,6 +36,7 @@ struct Book
 	string title;
 	bool sortByISBN;
 
+	// constructors for Book
 	Book (int a, string b, bool c)
 	{
 		isbn = a;
@@ -45,6 +47,9 @@ struct Book
 	{
 	}
 
+	// Overload > and < operators for comparing books
+	// check if we're sorting by ISBN or title to tell whether we should
+	// compare ISBN or title
 	bool operator>(const Book& compare) const
 	{
 		if (this->sortByISBN)
@@ -65,6 +70,7 @@ struct Weight
 {
 	int customer_ID, weight;
 
+	// Weight constructors
 	Weight (int a, int b)
 	{
 		customer_ID = a;
@@ -74,6 +80,7 @@ struct Weight
 	{
 	}
 
+	// overload operators < and >, so we can compare weights and see which is greater
 	bool operator>(const Weight& compare) const
 	{
 		return (this->weight > compare.weight);
@@ -84,8 +91,11 @@ struct Weight
 	}
 };
 
+// create booksByISBN and booksByTitle binary search trees
+// We need two binary search trees, so we can search by ISBN and title
 Binary_Search_Tree<string> booksByISBN, booksByTitle;
 
+// populate Books binary search trees from specified source file
 void populateBooksBST(const string& source)
 {
 	ifstream ifs(source);
@@ -95,12 +105,16 @@ void populateBooksBST(const string& source)
 
 		while (getline(ifs, line))
 		{
+			// match and store (ISBN) and then (title)
+			// Title can contain any characters, so match with anything after the comma and space
 			regex re("([0-9]+), (.*)");
 			smatch match;
 			if (regex_search(line, match, re) && match.size() > 1)
 			{
 				isbn = match.str(1);
 				title = match.str(2);
+				// Create string that is the title followed by a comma, a space, and then ISBN number
+				// then store in booksByTitle, so we can sort by title
 				string title_ISBN = match.str(2) + ", " + match.str(1);
 				booksByTitle.insert(title_ISBN);
 				booksByISBN.insert(line);
@@ -124,6 +138,8 @@ void populateRatingVector(const string& source)
 
 		while (getline(ifs, line))
 		{
+			// Store and match (number), (number), (number)
+			// they are: customer_ID, rating, book_ID
 			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
 			smatch match;
 			if (regex_search(line, match, re) && match.size() > 1)
@@ -148,6 +164,8 @@ void populateCustomerVector(const string& source)
 
 		while (getline(ifs, line))
 		{
+			// We only match the customer's name as their ID will be the same as their index in the vector
+			// as in: customer ID n will be customerVector[n]
 			regex re(", (.*)");
 			smatch match;
 			if (regex_search(line, match, re) && match.size() > 1)
@@ -161,6 +179,7 @@ void populateCustomerVector(const string& source)
 
 // Generalized function to populate maps
 // Works for customersMap and booksMap
+// this will likely be removed
 void populateMap(map<int, string>& map, const string& source)
 {
 	ifstream ifs(source);
@@ -183,6 +202,9 @@ void populateMap(map<int, string>& map, const string& source)
 		ifs.close();
 	}
 }
+
+// Below is the start of a parallel function, we will add and change things to parallel later
+// !!!Most things below will likely be removed!!!
 
 /*
 void ppp()

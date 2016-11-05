@@ -120,6 +120,11 @@ void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const 
 	// We may be able to use the below code to match without being case sensitive
 	//std::string check = local_root->data.substr(0, target.length());
 	//if (std::transform(target.begin(), target.end(), target.begin(), ::tolower) == std::transform(check.begin(), check.end(), check.begin(), ::tolower))
+
+	// If target matches the beginning of the node, push it into matches list
+	// and then search the left and right subtrees
+	// If target does not match, compare and search left subtree if target is less than the node's data
+	// or search right subtree if target is greater than the node's data
 	if (target == local_root->data.substr(0, target.length()))
 	{
 		matches.push_back(local_root->data);
@@ -132,6 +137,8 @@ void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const 
 		return search(local_root->right, target, matches);
 }
 
+// Wrapper function for search()
+// start searching at root, and go from there
 template<typename Item_Type>
 const std::list<Item_Type> Binary_Search_Tree<Item_Type>::searchWrapper(const Item_Type& target) const
 {
