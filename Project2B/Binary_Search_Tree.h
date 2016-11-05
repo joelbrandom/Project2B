@@ -3,7 +3,7 @@
 
 #include "Binary_Tree.h"
 #include <list>
-
+#include <algorithm>
 
 template<typename Item_Type>
 class Binary_Search_Tree : public Binary_Tree<Item_Type>
@@ -28,7 +28,9 @@ public:
 	const Item_Type* find(const Item_Type& target) const;
 
 	// Search for an item. You do not need to specify the target's entire name.
-	const std::list<Item_Type> search(const Item_Type& target, std::list<Item_Type>& matches) const;
+	void search(const Item_Type& target, std::list<Item_Type>& matches) const;
+
+	const std::list<Item_Type> searchWrapper(const Item_Type& target) const;
 
 private:
 
@@ -42,7 +44,9 @@ private:
 	const Item_Type* find(BTNode<Item_Type>* local_root,
 		const Item_Type& target) const;
 
-	const std::list<Item_Type> search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const;
+	void search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const;
+
+	//const std::list<Item_Type> searchWrapper(const Item_Type& target) const;
 
 	virtual void replace_parent(
 		BTNode<Item_Type>*& old_root,
@@ -103,16 +107,19 @@ const Item_Type* Binary_Search_Tree<Item_Type>::find(BTNode<Item_Type>* local_ro
 }
 
 template<typename Item_Type>
-const std::list<Item_Type> Binary_Search_Tree<Item_Type>::search(const Item_Type& target, std::list<Item_Type>& matches) const
+void Binary_Search_Tree<Item_Type>::search(const Item_Type& target, std::list<Item_Type>& matches) const
 {
 	return search(this->root, target);
 }
 
 template<typename Item_Type>
-const std::list<Item_Type> Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const
+void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const
 {
 	if (local_root == NULL)
-		return NULL;
+		return;
+	// We may be able to use the below code to match without being case sensitive
+	//std::string check = local_root->data.substr(0, target.length());
+	//if (std::transform(target.begin(), target.end(), target.begin(), ::tolower) == std::transform(check.begin(), check.end(), check.begin(), ::tolower))
 	if (target == local_root->data.substr(0, target.length()))
 	{
 		matches.push_back(local_root->data);
@@ -123,6 +130,14 @@ const std::list<Item_Type> Binary_Search_Tree<Item_Type>::search(BTNode<Item_Typ
 		return search(local_root->left, target, matches);
 	else if (target > local_root->data)
 		return search(local_root->right, target, matches);
+}
+
+template<typename Item_Type>
+const std::list<Item_Type> Binary_Search_Tree<Item_Type>::searchWrapper(const Item_Type& target) const
+{
+	std::list<Item_Type> matches;
+	search(this->root, target, matches);
+	return matches;
 }
 
 template<typename Item_Type>

@@ -92,14 +92,15 @@ void Menu::ui_Search()
   std::string target;
   bool searchByISBN;
   std::list<string> matches;
-  std::cout << "Do you want to search by ISBN (0) or title (1)?\n";
+  std::cout << "Do you want to search by ISBN (1) or title (0)?\n";
   std::cin >> searchByISBN;
   std::cout << "Please enter your search:\n";
+  std::cin.ignore();
   std::getline(std::cin, target);
   if (searchByISBN)
-    booksByISBN.search(target, matches);
+    matches = booksByISBN.searchWrapper(target);
   else
-    booksByTitle.search(target, matches);
+    matches = booksByTitle.searchWrapper(target);
 
   if (matches.size() > 0)
   {
@@ -108,7 +109,7 @@ void Menu::ui_Search()
     else
       std::cout << "Here are the matches for your search:\n";
 
-    for (std::list<std::string>::const_iterator it; it != matches.end(); ++it)
+    for (std::list<std::string>::const_iterator it = matches.begin(); it != matches.end(); ++it)
       std::cout << *it << '\n';
   }
   else
