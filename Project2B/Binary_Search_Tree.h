@@ -46,7 +46,7 @@ private:
 template<typename Item_Type>
 const Item_Type* Binary_Search_Tree<Item_Type>::min() const {
 	return min(this->root);
-		
+
 }
 
 template<typename Item_Type>

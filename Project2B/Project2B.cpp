@@ -1,8 +1,11 @@
 //#include "stdafx.h"
-#include "store.h"
+//#include "store.h"
 #include <iostream>
 #include <map>
 #include <string>
+#include "Binary_Search_Tree.h"
+#include <queue>
+#include "Menu.h"
 
 int main()
 {
@@ -12,21 +15,29 @@ int main()
 
   populateCustomerVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
 
-  Book a(123, "The dog", true);
-  Book b(21, "zCool", true);
+  populateBooksBST("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
 
-  if (b > a)
-    std::cout << "B bigger than a!\n";
-  else if (a > b)
-    std::cout << "a bigger than b\n";
+  //std::cout << booksByTitle << '\n';
 
-  Book c(123, "The dog", false);
-  Book d(21, "zCool", false);
+  Menu menu;
+  menu.show();
 
-  if (d > c)
-    std::cout << "d bigger than c!\n";
-  else if (c > d)
-    std::cout << "c bigger than d\n";
+/*
+  std::priority_queue<Weight> weights;
+
+  Weight w1(0, 5), w2(3, 9), w3(0, 0), w4(3, -4), w5(6, 23);
+  weights.push(w1);
+  weights.push(w2);
+  weights.push(w3);
+  weights.push(w4);
+  weights.push(w5);
+
+  while(!weights.empty())
+  {
+    std::cout << weights.top().weight << '\n';
+    weights.pop();
+  }
+*/
 
 /*
   int login;

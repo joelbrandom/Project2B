@@ -8,6 +8,7 @@
 #include <map>
 #include <vector>
 #include <regex>
+#include "Binary_Search_Tree.h"
 //#include <omp.h>
 using namespace std;
 
@@ -51,7 +52,62 @@ struct Book
 		else
 			return (this->title > compare.title);
 	}
+	bool operator<(const Book& compare) const
+	{
+		if (this->sortByISBN)
+			return (this->isbn < compare.isbn);
+		else
+			return (this->title < compare.title);
+	}
 };
+
+struct Weight
+{
+	int customer_ID, weight;
+
+	Weight (int a, int b)
+	{
+		customer_ID = a;
+		weight = b;
+	}
+	Weight ()
+	{
+	}
+
+	bool operator>(const Weight& compare) const
+	{
+		return (this->weight > compare.weight);
+	}
+	bool operator<(const Weight& compare) const
+	{
+		return (this->weight < compare.weight);
+	}
+};
+
+Binary_Search_Tree<string> booksByISBN, booksByTitle;
+
+void populateBooksBST(const string& source)
+{
+	ifstream ifs(source);
+	if (ifs)
+	{
+		string isbn, title, line;
+
+		while (getline(ifs, line))
+		{
+			regex re("([0-9]+), (.*)");
+			smatch match;
+			if (regex_search(line, match, re) && match.size() > 1)
+			{
+				isbn = match.str(1);
+				title = match.str(2);
+				string title_ISBN = match.str(2) + ", " + match.str(1);
+				booksByTitle.insert(title_ISBN);
+				booksByISBN.insert(line);
+			}
+		}
+	}
+}
 
 vector<Rating> ratingVector;
 vector<string> customerVector;

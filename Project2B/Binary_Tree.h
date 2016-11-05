@@ -81,19 +81,19 @@ public:
 	std::string pre_order() const {
 		return pre_order(root);
 	}
-	
 
-	
+
+
 	/** Return a post-order traversal of the tree */
 	std::string post_order() const {
 		return post_order(root);
 	}
-	
+
 
 	std::string in_order() const {
 		return in_order(root);
 	}
-	
+
 
 
 	int height() const {
@@ -253,7 +253,7 @@ void Binary_Tree<Item_Type>::read_tree(std::vector<std::string>& text) {
 template<typename Item_Type>
 Binary_Tree<Item_Type> Binary_Tree<Item_Type>::
 	read_binary_tree(std::vector<std::string>& text, int& i) {
-			
+
 			if (i>text.size()-1 || text[i]=="NULL")  {
 				return Binary_Tree<Item_Type>();
 			}
@@ -348,4 +348,3 @@ std::string Binary_Tree<Item_Type>::in_order(const BTNode<Item_Type>* local_root
 
 
 #endif
-
