@@ -6,6 +6,8 @@
 #include "Binary_Search_Tree.h"
 #include <queue>
 #include "Menu.h"
+#include"stdafx.h"
+
 
 int main()
 {
