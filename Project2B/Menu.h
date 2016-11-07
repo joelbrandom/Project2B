@@ -98,7 +98,7 @@ void Menu::ui_Search()
 {
   std::string target;
   bool searchByISBN;
-  std::list<string> matches;
+  std::vector<string> matches;
   // Search by ISBN when searchByISBN is true (1), search by title when searchByISBN is false (0)
   std::cout << "Do you want to search by ISBN (1) or title (0)?\n";
   std::cin >> searchByISBN;
@@ -128,8 +128,10 @@ void Menu::ui_Search()
     // Not yet included: we will have a number next to each match like 5: title
     // then the user can select which of the matches they meant or none at all
     // once they select the correct book, they can then rate it
-    for (std::list<std::string>::const_iterator it = matches.begin(); it != matches.end(); ++it)
-      std::cout << *it << '\n';
+    //for (std::list<std::string>::const_iterator it = matches.begin(); it != matches.end(); ++it)
+    //  std::cout << *it << '\n';
+    for (int i = 0; i < matches.size(); ++i)
+      std::cout << i << ": " << matches.at(i) << '\n';
   }
   else
   {

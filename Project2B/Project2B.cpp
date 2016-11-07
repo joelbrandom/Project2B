@@ -11,11 +11,11 @@ int main()
 {
   // populating the vectors and binary search trees
   // these functions will be moved later on to clean up main()
-  populateRatingVector("ratings.txt");
+  populateRatingVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/ratings.txt");
 
-  populateCustomerVector("customers.txt");
+  populateCustomerVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
 
-  populateBooksBST("books.txt");
+  populateBooksBST("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
 
   //std::cout << booksByTitle << '\n';
 

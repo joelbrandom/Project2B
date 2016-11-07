@@ -2,7 +2,9 @@
 #define BINARY_SEARCH_TREE_H
 
 #include "Binary_Tree.h"
+// You may be able to remove list
 #include <list>
+#include <vector>
 #include <algorithm>
 
 template<typename Item_Type>
@@ -28,9 +30,9 @@ public:
 	const Item_Type* find(const Item_Type& target) const;
 
 	// Search for an item. You do not need to specify the target's entire name.
-	void search(const Item_Type& target, std::list<Item_Type>& matches) const;
+	void search(const Item_Type& target, std::vector<Item_Type>& matches) const;
 
-	const std::list<Item_Type> searchWrapper(const Item_Type& target) const;
+	const std::vector<Item_Type> searchWrapper(const Item_Type& target) const;
 
 private:
 
@@ -44,7 +46,7 @@ private:
 	const Item_Type* find(BTNode<Item_Type>* local_root,
 		const Item_Type& target) const;
 
-	void search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const;
+	void search(BTNode<Item_Type>* local_root, const Item_Type& target, std::vector<Item_Type>& matches) const;
 
 	//const std::list<Item_Type> searchWrapper(const Item_Type& target) const;
 
@@ -107,13 +109,13 @@ const Item_Type* Binary_Search_Tree<Item_Type>::find(BTNode<Item_Type>* local_ro
 }
 
 template<typename Item_Type>
-void Binary_Search_Tree<Item_Type>::search(const Item_Type& target, std::list<Item_Type>& matches) const
+void Binary_Search_Tree<Item_Type>::search(const Item_Type& target, std::vector<Item_Type>& matches) const
 {
 	return search(this->root, target);
 }
 
 template<typename Item_Type>
-void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const Item_Type& target, std::list<Item_Type>& matches) const
+void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const Item_Type& target, std::vector<Item_Type>& matches) const
 {
 	if (local_root == NULL)
 		return;
@@ -140,9 +142,9 @@ void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const 
 // Wrapper function for search()
 // start searching at root, and go from there
 template<typename Item_Type>
-const std::list<Item_Type> Binary_Search_Tree<Item_Type>::searchWrapper(const Item_Type& target) const
+const std::vector<Item_Type> Binary_Search_Tree<Item_Type>::searchWrapper(const Item_Type& target) const
 {
-	std::list<Item_Type> matches;
+	std::vector<Item_Type> matches;
 	search(this->root, target, matches);
 	return matches;
 }
