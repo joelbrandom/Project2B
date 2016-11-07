@@ -40,25 +40,5 @@ int main()
     weights.pop();
   }
 */
-
-/*
-  int login;
-  std::cout << "Log in as:\n";
-
-  while(login != -1)
-  {
-    std::cin >> login;
-
-    if (login >= 0 && login < customerVector.size())
-      std::cout << "Success! You are logged in as" << customerVector[login] << "!\n";
-    else
-      std::cout << "No user by that id";
-  }
-  //for (int i = 0; i < ratingVector.size() / 2; ++i)
-    //std::cout << ratingVector[i].customer_ID << ' ' << ratingVector[i].rating << ' ' << ratingVector[i].book_ID << '\n';
-
-  for (std::map<int, std::string>::iterator i = customersMap.begin(); i != customersMap.end(); ++i)
-    std::cout << i->first << ' ' << i->second << '\n';
-*/
   return 0;
 }
