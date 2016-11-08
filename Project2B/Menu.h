@@ -157,17 +157,28 @@ void Menu::ui_Search()
         int ratingCheck;
         if (searchByISBN)
         {
+          // If we searched by ISBN, the result with be (ISBN, Title)
+          // so we want to grab the ISBN by getting the first 9 characters
+          // of the match
           targetISBN = matches.at(select).substr(0, 9);
+          // The rating check will search for the book in the corresponding
+          // vector<Rating> to the logged in customer's ID.
           ratingCheck = searchRatingVector(theRatingVector[loginID], targetISBN);
         }
         else
         {
-          targetISBN = matches.at(select).substr(matches.at(select).find_last_of(" "), 9);
+          // If we searched by title, the match result will be (Title, ISBN)
+          // so to grab the ISBN, we want to find the last space, and then
+          // get the next 9 characters, starting with the position after the space
+          targetISBN = matches.at(select).substr(matches.at(select).find_last_of(" ") + 1, 9);
           ratingCheck = searchRatingVector(theRatingVector[loginID], targetISBN);
         }
+        // Initialize inputRating as -1, so we know what it is
+        // and that it currently won't be accepted
         int inputRating = -1;
         if (ratingCheck == -1)
         {
+          // If ratingCheck returns -1, then the user has not rated the book
           std::cout << "You have not rated this book. What would you like to rate it (1-5 inclusive)?\n";
           while (inputRating <= 0 || inputRating > 5)
           {
@@ -180,13 +191,16 @@ void Menu::ui_Search()
         }
         else
         {
+          // This else covers when the user has rated the book and may want
+          // to update their rating
           std::cout << "You have already rated this book (current rating: " << theRatingVector[loginID][ratingCheck].rating << ").\n";
           std::cout << "You can now change your rating if you wish:\n";
           while (inputRating <= 0 || inputRating > 5)
           {
             std::cin.clear();
             std::cin >> inputRating;
-            std::cout << "Error: you tried to rate the book a value outisde of 1-5 inclusive.\nPlease try again:\n";
+            if (inputRating <= 0 || inputRating > 5)
+              std::cout << "Error: you tried to rate the book a value outisde of 1-5 inclusive.\nPlease try again:\n";
           }
           theRatingVector[loginID][ratingCheck].rating = inputRating;
         }
@@ -201,7 +215,7 @@ void Menu::ui_Search()
 
 void Menu::ui_Rate()
 {
-
+  // MOVE RATING CODE HERE EVENTUALLY
 }
 
 void Menu::ui_Recommendations()

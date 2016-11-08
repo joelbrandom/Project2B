@@ -121,10 +121,8 @@ void populateBooksBST(const string& source)
 	}
 }
 
-vector<Rating> ratingVector;
 vector<vector<Rating>> theRatingVector;
 vector<string> customerVector;
-map<int, string> booksMap, customersMap;
 
 // Store ratings into a vector
 void populateRatingVector(const string& source)
@@ -142,6 +140,7 @@ void populateRatingVector(const string& source)
 
 		while (getline(ifs, line))
 		{
+			// We want to match (int, int, int)
 			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
 			smatch match;
 			if (regex_search(line, match, re) && match.size() > 1)
@@ -157,6 +156,9 @@ void populateRatingVector(const string& source)
 	}
 }
 
+// Search to check whether user has previously rated
+// book before. This will be used after they've searched
+// for a book
 int searchRatingVector(vector<Rating>& v, const string& target)
 {
 	for (int i = 0; i < v.size(); ++i)
@@ -170,38 +172,8 @@ int searchRatingVector(vector<Rating>& v, const string& target)
 	return -1;
 }
 
-/*
-	This was first version of function, let's try making a vector<vector<Rating>>.
-	We can remove customer_ID from Rating and just get it from the external vector's index
-
-void populateRatingVector(const string& source)
-{
-	ifstream ifs(source);
-	if (ifs)
-	{
-		int cID, user_rating, book;
-		string line;
-
-		while (getline(ifs, line))
-		{
-			// Store and match (number), (number), (number)
-			// they are: customer_ID, rating, book_ID
-			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
-			smatch match;
-			if (regex_search(line, match, re) && match.size() > 1)
-			{
-				cID = stoi(match.str(1));
-				user_rating = stoi(match.str(2));
-				book = stoi(match.str(3));
-				Rating rating(cID, user_rating, book);
-				ratingVector.push_back(rating);
-			}
-		}
-		ifs.close();
-	}
-}
-*/
-
+// Populate the customer vector so it contains
+// all customers from specified file (customers.txt)
 void populateCustomerVector(const string& source)
 {
 	ifstream ifs(source);
