@@ -1,7 +1,5 @@
 #pragma once
 
-
-//#include<store.h>
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -14,14 +12,14 @@ using namespace std;
 
 struct Rating
 {
-	int customer_ID;
+	//int customer_ID;
 	int rating;
 	int book_ID;
 
 	// constructors for Rating
-	Rating (int custID, int rate, int bookID)
+	Rating (int rate, int bookID)
 	{
-		customer_ID = custID;
+		//customer_ID = custID;
 		rating = rate;
 		book_ID = bookID;
 	}
@@ -124,10 +122,58 @@ void populateBooksBST(const string& source)
 }
 
 vector<Rating> ratingVector;
+vector<vector<Rating>> theRatingVector;
 vector<string> customerVector;
 map<int, string> booksMap, customersMap;
 
 // Store ratings into a vector
+void populateRatingVector(const string& source)
+{
+	while (theRatingVector.size() < customerVector.size())
+	{
+		vector<Rating> v;
+		theRatingVector.push_back(v);
+	}
+	ifstream ifs(source);
+	if (ifs)
+	{
+		int cust_ID, user_rating, book;
+		string line;
+
+		while (getline(ifs, line))
+		{
+			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
+			smatch match;
+			if (regex_search(line, match, re) && match.size() > 1)
+			{
+				cust_ID = stoi(match.str(1));
+				user_rating = stoi(match.str(2));
+				book = stoi(match.str(3));
+				Rating rating(user_rating, book);
+				theRatingVector[cust_ID].push_back(rating);
+			}
+		}
+		ifs.close();
+	}
+}
+
+int searchRatingVector(vector<Rating>& v, const string& target)
+{
+	for (int i = 0; i < v.size(); ++i)
+	{
+		// If target is found in rating vector, return its index
+		// otherwise, return -1 (not found)
+		// MAKE THIS PARALLEL!
+		if (v.at(i).book_ID == stoi(target))
+			return i;
+	}
+	return -1;
+}
+
+/*
+	This was first version of function, let's try making a vector<vector<Rating>>.
+	We can remove customer_ID from Rating and just get it from the external vector's index
+
 void populateRatingVector(const string& source)
 {
 	ifstream ifs(source);
@@ -154,6 +200,7 @@ void populateRatingVector(const string& source)
 		ifs.close();
 	}
 }
+*/
 
 void populateCustomerVector(const string& source)
 {
@@ -260,73 +307,4 @@ void ppp()
 
 	}
 
-*/
-
-//store Ratings into vector need to adjust it a liitle bit
-vector<Rating>list_rating;
-int i = 0;
-//
-
-
-map<string, string> books; // h
-string book_title; // h
-string ISBN; // h
-
-map<int, string> customers; //h
-int ID; // h
-string Name; // h
-map<string, string>::iterator V;// h
-map<int, string>::iterator K;// h
-
-//function that finds book title by isbn number, if it is not there it will return Error (cpp)
-// You can find the second from a map using:
-// map_variable["ISBN"]
-string find_a_title_by_isbn(string new_isbn)
-{
-
-	for (map<string, string>::iterator V = books.begin(); V != books.end(); V++)
-	{
-		if (V->first == new_isbn)
-		{
-			return V->second;
-
-		}
-		//return "Error";
-	}
-	return "Error";
-}
-
-/*
-	// can make it a function to read in id and names from the file (cpp)
-	while (fin >> ID >> Name)
-	{
-		customers[ID] = Name;
-
-	}
-*/
-
-//function that finds book title by isbn number, if it is not there it will return Error (cpp)
-string find_name_by_id(int new_id)
-{
-
-	for (map<int, string>::iterator K = customers.begin(); K != customers.end(); K++)
-	{
-		if (K->first == new_id)
-		{
-			return K->second;
-
-		}
-		//return "Error";
-	}
-	return "Error: not found";
-}
-
-
-/*for (map<string, int> ::iterator V = m2.begin(); V != m2.end(); V++)
-{
-fout << V->first << ",  " << V->second << endl;
-}
-system("pause");
-return 0;
-}
 */

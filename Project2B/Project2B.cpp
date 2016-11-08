@@ -6,17 +6,14 @@
 #include "Binary_Search_Tree.h"
 #include <queue>
 #include "Menu.h"
-#include"stdafx.h"
 
 
 int main()
 {
   // populating the vectors and binary search trees
   // these functions will be moved later on to clean up main()
-  populateRatingVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/ratings.txt");
-
   populateCustomerVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
-
+  populateRatingVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/ratings.txt");
   populateBooksBST("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
 
   //std::cout << booksByTitle << '\n';
