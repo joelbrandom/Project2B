@@ -9,13 +9,6 @@
 
 int main()
 {
-  // populating the vectors and binary search trees
-  // these functions will be moved later on to clean up main()
-  populateCustomerVector("customers.txt");
-  populateRatingVector("ratings.txt");
-  populateBooksBST("books.txt");
-
-  //std::cout << booksByTitle << '\n';
 
   Menu menu;
   menu.show();

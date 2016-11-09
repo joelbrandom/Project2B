@@ -23,10 +23,40 @@ struct Rating
 		rating = rate;
 		book_ID = bookID;
 	}
+	Rating(int bookID)
+	{
+		book_ID = bookID;
+	}
 	Rating ()
 	{
 	}
+
+	bool operator<(const Rating& compare) const
+	{
+		return (this->book_ID < compare.book_ID);
+	}
+	bool operator>(const Rating& compare) const
+	{
+		return (this->book_ID > compare.book_ID);
+	}
+	bool operator==(const Rating& compare) const
+	{
+		return (this->book_ID == compare.book_ID);
+	}
+	void operator=(const Rating* assignment)
+	{
+		this->book_ID = assignment->book_ID;
+		this->rating = assignment->rating;
+	}
+
+	friend ostream& operator<<(ostream& os, const Rating& r);
 };
+
+ostream& operator<<(ostream& os, const Rating& r)
+{
+	os << r.book_ID << '(' << r.rating << ')';
+	return os;
+}
 
 struct Book
 {
@@ -122,6 +152,7 @@ void populateBooksBST(const string& source)
 }
 
 vector<vector<Rating>> theRatingVector;
+vector<Binary_Search_Tree<Rating>> ratingBST;
 vector<string> customerVector;
 
 // Store ratings into a vector
@@ -153,6 +184,36 @@ void populateRatingVector(const string& source)
 			}
 		}
 		ifs.close();
+	}
+}
+
+void populateRatingBST(const string& source)
+{
+	while (ratingBST.size() < customerVector.size())
+	{
+		Binary_Search_Tree<Rating> bst;
+		ratingBST.push_back(bst);
+	}
+
+	ifstream ifs(source);
+	if (ifs)
+	{
+		int cust_ID, user_rating, book;
+		string line;
+
+		while (getline(ifs, line))
+		{
+			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
+			smatch match;
+			if (regex_search(line, match, re) && match.size() > 1)
+			{
+				cust_ID = stoi(match.str(1));
+				user_rating = stoi(match.str(2));
+				book = stoi(match.str(3));
+				Rating rating(user_rating, book);
+				ratingBST[cust_ID].insert(rating);
+			}
+		}
 	}
 }
 
@@ -209,6 +270,19 @@ void saveNewRatings(const string& source)
 			}
 		}
 		ofs.close();
+	}
+}
+
+// This will save new ratings from a vector of BSTs
+void saveNewRatings2(const string& source)
+{
+	ofstream ofs(source);
+	if (ofs.is_open())
+	{
+		for (int i = 0; i < ratingBST.size(); ++i)
+		{
+
+		}
 	}
 }
 

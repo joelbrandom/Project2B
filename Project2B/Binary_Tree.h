@@ -10,6 +10,7 @@
 #include <algorithm>
 #include "BTNode.h"
 #include <vector>
+#include <stack>
 
 template<typename Item_Type>
 class Binary_Tree
@@ -82,6 +83,10 @@ public:
 		return pre_order(root);
 	}
 
+	/** Return a stack of all Ratings */
+	std::stack<Rating> stackFromBT() const {
+		return stackFromBT(root);
+	}
 
 
 	/** Return a post-order traversal of the tree */
@@ -125,7 +130,7 @@ private:
 
 	std::string pre_order(const BTNode<Item_Type>* local_root) const;
 
-
+	std::stack<Rating> stackFromBT(const BTNode<Rating>* local_root) const;
 
 	std::string post_order(const BTNode<Item_Type>* local_root) const;
 
@@ -302,6 +307,19 @@ std::string Binary_Tree<Item_Type>::pre_order(const BTNode<Item_Type>* local_roo
 			result += " ";
 			result += pre_order(local_root->right);
 		}
+	}
+	return result;
+}
+
+std::stack<Rating> Binary_Tree<Rating>::stackFromBT(const BTNode<Rating>* local_root) const {
+	std::stack<Rating> result;
+	if (local_root != NULL)
+	{
+		result.push(local_root);
+		if (local_root->left != NULL)
+			result.push(stackFromBT(local_root->left));
+		if (local_root->right != NULL)
+			result.push(stackFromBT(local_root->right));
 	}
 	return result;
 }
