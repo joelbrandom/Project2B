@@ -1,5 +1,4 @@
-//#include "stdafx.h"
-//#include "store.h"
+#include "stdafx.h"
 #include <iostream>
 #include <map>
 #include <string>
@@ -12,9 +11,9 @@ int main()
 {
   // populating the vectors and binary search trees
   // these functions will be moved later on to clean up main()
-  populateCustomerVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/customers.txt");
-  populateRatingVector("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/ratings.txt");
-  populateBooksBST("/Users/joel/Documents/School/UMKC Fall 2016/Data Structures/Projects/Project2B/Project2B/books.txt");
+  populateCustomerVector("customers.txt");
+  populateRatingVector("ratings.txt");
+  populateBooksBST("books.txt");
 
   //std::cout << booksByTitle << '\n';
 
