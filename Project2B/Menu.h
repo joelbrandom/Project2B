@@ -50,9 +50,11 @@ void Menu::login(int ID)
 }
 
 // To log a customer out, we just need to change their loggedIn value from true to false
+// We also want to save the new ratings to ratings.txt!
 void Menu::logout()
 {
-  loggedIn = false;
+	saveNewRatings("ratings.txt");
+	loggedIn = false;
 }
 
 void Menu::show()

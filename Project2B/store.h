@@ -196,6 +196,22 @@ void populateCustomerVector(const string& source)
 	}
 }
 
+void saveNewRatings(const string& source)
+{
+	ofstream ofs(source);
+	if (ofs.is_open())
+	{
+		for (int i = 0; i < theRatingVector.size(); ++i)
+		{
+			for (int j = 0; j < theRatingVector[i].size(); ++j)
+			{
+				ofs << i << ", " << theRatingVector[i][j].rating << ", " << theRatingVector[i][j].book_ID << '\n';
+			}
+		}
+		ofs.close();
+	}
+}
+
 // Generalized function to populate maps
 // Works for customersMap and booksMap
 // this will likely be removed
