@@ -65,6 +65,8 @@ public:
 	/** Return a string representation of this tree. */
 	virtual std::string to_string() const;
 
+	virtual std::string to_string_noNull() const;
+
 	/** Read a binary tree */
 	static Binary_Tree<Item_Type> read_binary_tree(std::istream& in);
 
@@ -83,10 +85,10 @@ public:
 		return pre_order(root);
 	}
 
-	/** Return a stack of all Ratings */
+	/** Return a stack of all Ratings
 	std::stack<Rating> stackFromBT() const {
 		return stackFromBT(root);
-	}
+	}*/
 
 
 	/** Return a post-order traversal of the tree */
@@ -129,8 +131,6 @@ private:
 
 
 	std::string pre_order(const BTNode<Item_Type>* local_root) const;
-
-	std::stack<Rating> stackFromBT(const BTNode<Rating>* local_root) const;
 
 	std::string post_order(const BTNode<Item_Type>* local_root) const;
 
@@ -242,6 +242,19 @@ std::string Binary_Tree<Item_Type>::to_string() const {
 	return os.str();
 }
 
+template<typename Item_Type>
+std::string Binary_Tree<Item_Type>::to_string_noNull() const
+{
+	std::ostringstream os;
+	if (!is_null())
+	{
+		os << *root << '\n';
+		os << get_left_subtree().to_string_noNull();
+		os << get_right_subtree().to_string_noNull();
+	}
+	return os.str();
+}
+
 /*string_tokenizer st(line, "+ ");
 while (st.has_more_tokens()) {
 	string term = st.next_token();*/
@@ -310,20 +323,6 @@ std::string Binary_Tree<Item_Type>::pre_order(const BTNode<Item_Type>* local_roo
 	}
 	return result;
 }
-
-std::stack<Rating> Binary_Tree<Rating>::stackFromBT(const BTNode<Rating>* local_root) const {
-	std::stack<Rating> result;
-	if (local_root != NULL)
-	{
-		result.push(local_root);
-		if (local_root->left != NULL)
-			result.push(stackFromBT(local_root->left));
-		if (local_root->right != NULL)
-			result.push(stackFromBT(local_root->right));
-	}
-	return result;
-}
-
 
 /** Return a post-order traversal of the tree */
 template<typename Item_Type>

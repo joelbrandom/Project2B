@@ -2,10 +2,11 @@
 #define BINARY_SEARCH_TREE_H
 
 #include "Binary_Tree.h"
-// You may be able to remove list
-#include <list>
 #include <vector>
+#include <list>
 #include <algorithm>
+#include <omp.h>
+#include "store.h"
 
 template<typename Item_Type>
 class Binary_Search_Tree : public Binary_Tree<Item_Type>
@@ -32,7 +33,11 @@ public:
 	// Search for an item. You do not need to specify the target's entire name.
 	void search(const Item_Type& target, std::vector<Item_Type>& matches) const;
 
+	void makeListOfRecs(const Binary_Search_Tree<Item_Type>& compare, std::list<std::string>& list) const;
+
 	const std::vector<Item_Type> searchWrapper(const Item_Type& target) const;
+
+	const std::list<std::string> makeListOfRecsWrapper(const Binary_Search_Tree<Item_Type>& compare) const;
 
 private:
 
@@ -48,7 +53,7 @@ private:
 
 	void search(BTNode<Item_Type>* local_root, const Item_Type& target, std::vector<Item_Type>& matches) const;
 
-	//const std::list<Item_Type> searchWrapper(const Item_Type& target) const;
+	void makeListOfRecs(BTNode<Item_Type>* local_root, const Binary_Search_Tree<Item_Type>& compare, std::list<std::string>& list) const;
 
 	virtual void replace_parent(
 		BTNode<Item_Type>*& old_root,
@@ -130,8 +135,13 @@ void Binary_Search_Tree<Item_Type>::search(BTNode<Item_Type>* local_root, const 
 	if (target == local_root->data.substr(0, target.length()))
 	{
 		matches.push_back(local_root->data);
-		search(local_root->left, target, matches);
-		search(local_root->right, target, matches);
+		#pragma omp parallel sections
+		{
+			#pragma omp section
+			search(local_root->left, target, matches);
+			#pragma omp section
+			search(local_root->right, target, matches);
+		}
 	}
 	else if (target < local_root->data)
 		return search(local_root->left, target, matches);
@@ -147,6 +157,39 @@ const std::vector<Item_Type> Binary_Search_Tree<Item_Type>::searchWrapper(const 
 	std::vector<Item_Type> matches;
 	search(this->root, target, matches);
 	return matches;
+}
+
+template<typename Item_Type>
+void Binary_Search_Tree<Item_Type>::makeListOfRecs(const Binary_Search_Tree<Item_Type>& compare, std::list<std::string>& list) const
+{
+	return makeListOfRecs(this->root, compare, list);
+}
+
+template<typename Item_Type>
+void Binary_Search_Tree<Item_Type>::makeListOfRecs(BTNode<Item_Type>* local_root, const Binary_Search_Tree<Item_Type>& compare, std::list<std::string>& list) const
+{
+	if (local_root == NULL || list.size() == 10)
+		return;
+	if (compare.find(local_root->data.book_ID) == NULL)
+	{
+		//list.push_back(get_data().book_ID);
+		//std::string title = *booksByISBN.find(std::to_string(get_data().book_ID));
+		std::string theISBN = local_root->data.book_ID;
+		//(booksByISBN.find(local_root->data.book_ID));
+		std::vector<std::string> v = booksByISBN.searchWrapper(theISBN);
+		if (v.size() != 0)
+			list.push_back(booksByISBN.searchWrapper(theISBN)[0]);
+	}
+	makeListOfRecs(local_root->left, compare, list);
+	makeListOfRecs(local_root->right, compare, list);
+}
+
+template<typename Item_Type>
+const std::list<std::string> Binary_Search_Tree<Item_Type>::makeListOfRecsWrapper(const Binary_Search_Tree<Item_Type>& compare) const
+{
+	std::list<std::string> listOfRecs;
+	makeListOfRecs(this->root, compare, listOfRecs);
+	return listOfRecs;
 }
 
 template<typename Item_Type>
