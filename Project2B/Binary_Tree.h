@@ -85,11 +85,7 @@ public:
 		return pre_order(root);
 	}
 
-	/** Return a stack of all Ratings
-	std::stack<Rating> stackFromBT() const {
-		return stackFromBT(root);
-	}*/
-
+	
 
 	/** Return a post-order traversal of the tree */
 	std::string post_order() const {
@@ -142,12 +138,7 @@ private:
 };  // End Binary_Tree
 
 
-/*template<typename Item_Type>
-bool Binary_Tree<Item_Type>::isBinarySearch(){
-	bool result=true;
-	isBinarySearch(this->root,result);
-	return result;
-}*/
+
 
 template<typename Item_Type>
 void Binary_Tree<Item_Type>::setRoot(BTNode<Item_Type>* new_root){
