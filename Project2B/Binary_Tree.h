@@ -47,10 +47,6 @@ public:
 	/** Return the right subtree. */
 	Binary_Tree<Item_Type> get_right_subtree() const;
 
-	bool isBinarySearch();
-
-	void isBinarySearch(BTNode<Item_Type>* local_root, bool& result);
-
 	/** Return the data field of the root.
 	@throws std::invalid_argument if empty tree
 	*/
@@ -245,10 +241,6 @@ std::string Binary_Tree<Item_Type>::to_string_noNull() const
 	}
 	return os.str();
 }
-
-/*string_tokenizer st(line, "+ ");
-while (st.has_more_tokens()) {
-	string term = st.next_token();*/
 
 template<typename Item_Type>
 void Binary_Tree<Item_Type>::read_tree(std::vector<std::string>& text) {

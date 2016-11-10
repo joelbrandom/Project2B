@@ -172,10 +172,7 @@ void Binary_Search_Tree<Item_Type>::makeListOfRecs(BTNode<Item_Type>* local_root
 		return;
 	if (compare.find(local_root->data.book_ID) == NULL)
 	{
-		//list.push_back(get_data().book_ID);
-		//std::string title = *booksByISBN.find(std::to_string(get_data().book_ID));
 		std::string theISBN = local_root->data.book_ID;
-		//(booksByISBN.find(local_root->data.book_ID));
 		std::vector<std::string> v = booksByISBN.searchWrapper(theISBN);
 		if (v.size() != 0)
 			list.push_back(booksByISBN.searchWrapper(theISBN)[0]);
