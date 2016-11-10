@@ -27,7 +27,6 @@ public:
 	void logout();
 	void show();
 	void ui_Search();
-	void ui_Search2();
 	void ui_Rate();
 	void ui_Recommendations();
 };
@@ -97,8 +96,6 @@ void Menu::show()
 	while (!loggedIn)
 	{
 		std::cout << "Please log in to continue. Enter your customer ID:\n";
-		//std::cin.clear();
-		//std::cin >> loginID;
 		safeIntInputRange(loginID, 0, 9);
 		login(loginID);
 	}
@@ -168,8 +165,6 @@ void Menu::ui_Search()
 		// Not yet included: we will have a number next to each match like 5: title
 		// then the user can select which of the matches they meant or none at all
 		// once they select the correct book, they can then rate it
-		//for (std::list<std::string>::const_iterator it = matches.begin(); it != matches.end(); ++it)
-		//  std::cout << *it << '\n';
 		for (int i = 0; i < matches.size(); ++i)
 			std::cout << i << ": " << matches.at(i) << '\n';
 
@@ -276,16 +271,8 @@ void Menu::ui_Recommendations()
 		}
 		weightQueue.push(weight);
 	}
-	/* This outputs the weights, just to check that they've been filled
 	while (!weightQueue.empty())
 	{
-		std::cout << weightQueue.top().customer_ID << ' ' << weightQueue.top().weight << '\n';
-		weightQueue.pop();
-	}
-	*/
-	while (!weightQueue.empty())
-	{
-		//recommendationsList = ratingBST[weightQueue.top().customer_ID].makeListOfRecsWrapper(ratingBST[loginID]);
 		recommendationsList = ratingBST[loginID].makeListOfRecsWrapper(ratingBST[weightQueue.top().customer_ID]);
 		weightQueue.pop();
 	}
