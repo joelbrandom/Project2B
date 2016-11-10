@@ -292,20 +292,6 @@ void populateCustomerVector(const string& source)
 
 void saveNewRatings(const string& source)
 {
-	/* This is the old version and will be updated
-	ofstream ofs(source);
-	if (ofs.is_open())
-	{
-		for (int i = 0; i < theRatingVector.size(); ++i)
-		{
-			for (int j = 0; j < theRatingVector[i].size(); ++j)
-			{
-				ofs << i << ", " << theRatingVector[i][j].rating << ", " << theRatingVector[i][j].book_ID << '\n';
-			}
-		}
-		ofs.close();
-	}
-	*/
 	ofstream ofs(source);
 	if (ofs.is_open())
 	{
@@ -355,44 +341,3 @@ void populateMap(map<int, string>& map, const string& source)
 		ifs.close();
 	}
 }
-
-
-/*
-	Below are the beginnings of possible functions to be used
-	(what used to be in main())
-
-	// File I/O
-	ifstream fin("books.txt");
-	ofstream fout("books_output.txt");
-	ifstream fin("customers.txt");
-	ofstream fout("customers_output.txt");
-	ifstream fin("ratings.txt");
-	ofstream fout("ratings_output.txt");
-
-	//store Ratings into vector need to adjust it a liitle bit
-	vector<Rating>list_rating;
-	int i = 0;
-	//
-
-
-	map<string, string> books; // h
-	string book_title; // h
-	string ISBN; // h
-
-	map<int, string> customers; //h
-	int ID; // h
-	string Name; // h
-	map<string, string>::iterator V;// h
-	map<int, string>::iterator K;// h
-
-								 // read in isbn and book title from the file and store it into map
-								 // can put it into separate function and call it when you need to store data (cpp)
-								 // need to ignore commas
-	while (fin >> ISBN >> book_title)
-	{
-
-		books[ISBN] = book_title;
-
-	}
-
-*/
