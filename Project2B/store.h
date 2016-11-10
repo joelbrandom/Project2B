@@ -3,7 +3,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include <map>
 #include <vector>
 #include <regex>
 #include "Binary_Search_Tree.h"
@@ -178,46 +177,12 @@ void populateBooksBST(const string& source)
 // this makes it so we can use parallel programming easier
 // in the recommendation function
 vector<Rating> loginIDRatings;
-vector<vector<Rating>> theRatingVector;
 vector<Binary_Search_Tree<Rating>> ratingBST;
 vector<string> customerVector;
 priority_queue<Weight> weightQueue;
 list<string> recommendationsList;
 
-// Store ratings into a vector
-void populateRatingVector(const string& source, const int& loginID)
-{
-	while (theRatingVector.size() < customerVector.size())
-	{
-		vector<Rating> v;
-		theRatingVector.push_back(v);
-	}
-	ifstream ifs(source);
-	if (ifs)
-	{
-		int cust_ID, user_rating;
-		string book, line;
-
-		while (getline(ifs, line))
-		{
-			// We want to match (int, int, int)
-			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
-			smatch match;
-			if (regex_search(line, match, re) && match.size() > 1)
-			{
-				cust_ID = stoi(match.str(1));
-				user_rating = stoi(match.str(2));
-				book = match.str(3);
-				Rating rating(user_rating, book);
-				theRatingVector[cust_ID].push_back(rating);
-				if (cust_ID == loginID)
-					loginIDRatings.push_back(rating);
-			}
-		}
-		ifs.close();
-	}
-}
-
+// Populate the binary search trees of ratings with the ratings from specified file
 void populateRatingBST(const string& source, const int& loginID)
 {
 	while (ratingBST.size() < customerVector.size())
@@ -250,22 +215,6 @@ void populateRatingBST(const string& source, const int& loginID)
 	}
 }
 
-// Search to check whether user has previously rated
-// book before. This will be used after they've searched
-// for a book
-int searchRatingVector(vector<Rating>& v, const string& target)
-{
-	for (int i = 0; i < v.size(); ++i)
-	{
-		// If target is found in rating vector, return its index
-		// otherwise, return -1 (not found)
-		// MAKE THIS PARALLEL!
-		if (v.at(i).book_ID == target)
-			return i;
-	}
-	return -1;
-}
-
 // Populate the customer vector so it contains
 // all customers from specified file (customers.txt)
 void populateCustomerVector(const string& source)
@@ -290,6 +239,7 @@ void populateCustomerVector(const string& source)
 	}
 }
 
+// Save newly made ratings into the ratings.txt
 void saveNewRatings(const string& source)
 {
 	ofstream ofs(source);

@@ -71,7 +71,6 @@ void Menu::login(int ID)
 		loginID = ID;
 		loggedIn = true;
 		std::cout << "Success! You are now logged in as " << customerVector[loginID] << "!\n";
-		//populateRatingVector("ratings.txt");
 		populateRatingBST("ratings.txt", loginID);
 		populateBooksBST("books.txt");
 	}
