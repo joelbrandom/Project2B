@@ -104,9 +104,8 @@ void Menu::show()
 		int choice;
 		std::cout << "Choose one of the options below by inputting the corresponding number:\n";
 		std::cout << "0: Search for a book\n";
-		std::cout << "1: Rate a book\n";
-		std::cout << "2: View book recommendations\n";
-		std::cout << "3: Log out\n";
+		std::cout << "1: View book recommendations\n";
+		std::cout << "2: Log out\n";
 
 		safeIntInputRange(choice, 0, 3);
 
@@ -116,12 +115,9 @@ void Menu::show()
 			ui_Search();
 			break;
 		case 1:
-			ui_Rate();
-			break;
-		case 2:
 			ui_Recommendations();
 			break;
-		case 3:
+		case 2:
 			logout();
 			break;
 		}
