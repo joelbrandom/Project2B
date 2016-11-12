@@ -103,7 +103,7 @@ void Menu::show()
 	{
 		int choice;
 		std::cout << "Choose one of the options below by inputting the corresponding number:\n";
-		std::cout << "0: Search for a book\n";
+		std::cout << "0: Search for a book and rate\n";
 		std::cout << "1: View book recommendations\n";
 		std::cout << "2: Log out\n";
 
