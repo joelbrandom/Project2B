@@ -130,11 +130,12 @@ void Menu::ui_Search()
 	std::string target;
 	bool searchByISBN;
 	std::vector<string> matches;
+	int select = 0;
 	// Search by ISBN when searchByISBN is true (1), search by title when searchByISBN is false (0)
 	std::cout << "Do you want to search by ISBN (1) or title (0)?\n";
-	//std::cin >> searchByISBN;
+
 	safeBoolInput(searchByISBN);
-	std::cout << "Please enter your search:\n";
+	std::cout << "Please enter your search (case sensitive):\n";
 	// cin.ignore() to clear stream
 	std::cin.ignore();
 	// Use getline instead of cin as titles may have spaces
@@ -151,84 +152,81 @@ void Menu::ui_Search()
 	{
 		// If only one match, use singular phrasing
 		// if more then one match, use plural phrasing
-		if (matches.size() == 1)
-			std::cout << "Here is the match for your search:\n";
-		else
+		if (matches.size() > 1)
 			std::cout << "There were multiple matches for your search. Please select your desired book by entering the corresponding number:\n";
 
 		// Output all matches
-		// Not yet included: we will have a number next to each match like 5: title
-		// then the user can select which of the matches they meant or none at all
+		// We will have a number next to each match like 5: title
+		// then the user can select which of the matches they meant
 		// once they select the correct book, they can then rate it
-		for (int i = 0; i < matches.size(); ++i)
-			std::cout << i << ": " << matches.at(i) << '\n';
+		if (matches.size() > 1)
+			for (int i = 0; i < matches.size(); ++i)
+				std::cout << i << ": " << matches.at(i) << '\n';
 
 		if (matches.size() > 1)
 		{
-			int select;
 
 			// We want select to be between 0 and matches.size()-1 inclusive, so this will allow
 			// the user to select again if their input is not one of the options
 			safeIntInputRange(select, 0, matches.size() - 1);
-
-			if (select >= 0 && select < matches.size())
+		}
+		if (select >= 0 && select < matches.size())
+		{
+			std::cout << "You selected: " << matches.at(select) << '\n';
+			// Ask user to rate the book between 1-5 inclusive
+			// If user has already rated book, provide them with their current rating
+			std::string targetISBN;
+			Rating ratingCheck;
+			bool found = false;
+			if (searchByISBN)
 			{
-				std::cout << "You selected: " << matches.at(select) << '\n';
-				// Ask user to rate the book between 1-5 inclusive
-				// If user has already rated book, provide them with their current rating
-				std::string targetISBN;
-				Rating ratingCheck;
-				bool found = false;
-				if (searchByISBN)
+				// If we searched by ISBN, the result with be (ISBN, Title)
+				// so we want to grab the ISBN by getting the first 9 characters
+				// of the match
+				targetISBN = matches.at(select).substr(0, 9);
+				Rating targetRating(targetISBN);
+				// The rating check will search for the book in the corresponding
+				// vector<Rating> to the logged in customer's ID.
+				if (ratingBST[loginID].find(targetRating) != NULL)
 				{
-					// If we searched by ISBN, the result with be (ISBN, Title)
-					// so we want to grab the ISBN by getting the first 9 characters
-					// of the match
-					targetISBN = matches.at(select).substr(0, 9);
-					Rating targetRating(targetISBN);
-					// The rating check will search for the book in the corresponding
-					// vector<Rating> to the logged in customer's ID.
-					if (ratingBST[loginID].find(targetRating) != NULL)
-					{
-						ratingCheck = ratingBST[loginID].find(targetRating);
-						found = true;
-					}
+					ratingCheck = ratingBST[loginID].find(targetRating);
+					found = true;
 				}
-				else
+			}
+			else
+			{
+				// If we searched by title, the match result will be (Title, ISBN)
+				// so to grab the ISBN, we want to find the last space, and then
+				// get the next 9 characters, starting with the position after the space
+				targetISBN = matches.at(select).substr(matches.at(select).find_last_of(" ") + 1, 9);
+				Rating targetRating(targetISBN);
+				if (ratingBST[loginID].find(targetRating) != NULL)
 				{
-					// If we searched by title, the match result will be (Title, ISBN)
-					// so to grab the ISBN, we want to find the last space, and then
-					// get the next 9 characters, starting with the position after the space
-					targetISBN = matches.at(select).substr(matches.at(select).find_last_of(" ") + 1, 9);
-					Rating targetRating(targetISBN);
-					if (ratingBST[loginID].find(targetRating) != NULL)
-					{
-						ratingCheck = ratingBST[loginID].find(targetRating);
-						found = true;
-					}
+					ratingCheck = ratingBST[loginID].find(targetRating);
+					found = true;
 				}
-				// Initialize inputRating as -1, so we know what it is
-				// and that it currently won't be accepted
-				int inputRating = -1;
-				if (!found)
-				{
-					// If user has not rated the book
-					std::cout << "You have not rated this book. What would you like to rate it (1-5 inclusive)?\n";
-					safeIntInputRange(inputRating, 1, 5);
-					Rating newRating(loginID, inputRating, targetISBN);
-					ratingBST[loginID].insert(newRating);
-				}
-				else
-				{
-					// This else covers when the user has rated the book and may want
-					// to update their rating
-					std::cout << "You have already rated this book (current rating: " << ratingCheck.rating << ").\n";
-					std::cout << "You can now change your rating if you wish:\n";
-					safeIntInputRange(inputRating, 1, 5);
-					Rating newRating(loginID, inputRating, targetISBN);
-					ratingBST[loginID].erase(targetISBN);
-					ratingBST[loginID].insert(newRating);
-				}
+			}
+			// Initialize inputRating as -1, so we know what it is
+			// and that it currently won't be accepted
+			int inputRating = -1;
+			if (!found)
+			{
+				// If user has not rated the book
+				std::cout << "You have not rated this book. What would you like to rate it (1-5 inclusive)?\n";
+				safeIntInputRange(inputRating, 1, 5);
+				Rating newRating(loginID, inputRating, targetISBN);
+				ratingBST[loginID].insert(newRating);
+			}
+			else
+			{
+				// This else covers when the user has rated the book and may want
+				// to update their rating
+				std::cout << "You have already rated this book (current rating: " << ratingCheck.rating << ").\n";
+				std::cout << "You can now change your rating if you wish (1-5 inclusive):\n";
+				safeIntInputRange(inputRating, 1, 5);
+				Rating newRating(loginID, inputRating, targetISBN);
+				ratingBST[loginID].erase(targetISBN);
+				ratingBST[loginID].insert(newRating);
 			}
 		}
 	}
@@ -248,6 +246,7 @@ void Menu::ui_Rate()
 
 void Menu::ui_Recommendations()
 {
+	// Create 4 threads for more optimal parallelism
 	omp_set_num_threads(4);
 	#pragma omp parallel for
 	for (int i = 0; i < ratingBST.size(); ++i)
@@ -256,11 +255,18 @@ void Menu::ui_Recommendations()
 		// j = index of logged in user's rating vector
 		if (i == loginID)
 			++i;
+		if (i >= customerVector.size())
+			break;
 		Weight weight(i);
 		for (int j = 0; j < loginIDRatings.size(); ++j)
 		{
 			if (ratingBST[i].find(loginIDRatings[j].book_ID) != NULL)
 			{
+				// Algorithm to weight each user by similarity
+				// Weight = (4 - |your rating - their rating|)^2
+				// This will give 0 when there is the max difference in rating ((4 - (5 - 1))^2 = 0)
+				// and will give largest value when same score is given ((4 - (5 - 5))^2 = 16)
+				// 
 				weight.weight += pow((4 - std::abs((loginIDRatings[j].rating - ratingBST[i].find(loginIDRatings[j].book_ID)->rating))), 2.0);
 			}
 		}
@@ -271,10 +277,9 @@ void Menu::ui_Recommendations()
 		recommendationsList = ratingBST[loginID].makeListOfRecsWrapper(ratingBST[weightQueue.top().customer_ID]);
 		weightQueue.pop();
 	}
-	for (auto x : recommendationsList)
-	{
-		std::cout << x << '\n';
-	}
+	// Output the list of recommendations
+	for (std::list<std::string>::const_iterator it = recommendationsList.begin(); it != recommendationsList.end(); ++it)
+		std::cout << *it << '\n';
 }
 
 #endif
