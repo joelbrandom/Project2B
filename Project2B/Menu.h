@@ -27,7 +27,6 @@ public:
 	void logout();
 	void show();
 	void ui_Search();
-	void ui_Rate();
 	void ui_Recommendations();
 };
 
