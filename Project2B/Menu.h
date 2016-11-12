@@ -31,12 +31,17 @@ public:
 	void ui_Recommendations();
 };
 
+// Menu constructor, default
 Menu::Menu()
 {
 	// loggedIn should initialize as false and only be true once user logs in
 	loggedIn = false;
 }
 
+// Function for bool input
+// Will only allow the user to input 0 or 1,
+// otherwise, will report error and ask user to try again
+// parameter a is the var to be inputted
 void Menu::safeBoolInput(bool& a)
 {
 	std::cin >> a;
@@ -49,6 +54,12 @@ void Menu::safeBoolInput(bool& a)
 	}
 }
 
+// Function for int input
+// Will allow user to input any integer as long as it falls in the specified range
+// will report error and ask to try again when not in range/not integer
+// parameter a: var to be inputted
+// parameter from: start of range (inclusive)
+// parameter to: end of range (inclusive)
 void Menu::safeIntInputRange(int& a, const int from, const int to)
 {
 	std::cin >> a;
@@ -61,6 +72,9 @@ void Menu::safeIntInputRange(int& a, const int from, const int to)
 	}
 }
 
+// login function for Menu class
+// This runs populateRatingBST() and populateBooksBST() after successful login
+// parameter ID: customer ID specified by user
 void Menu::login(int ID)
 {
 	// Check if specified ID is between 0 and customerVector.size()-1 inclusive
@@ -88,6 +102,7 @@ void Menu::logout()
 	loggedIn = false;
 }
 
+// Function to display UI menu
 void Menu::show()
 {
 	populateCustomerVector("customers.txt");
@@ -95,7 +110,7 @@ void Menu::show()
 	while (!loggedIn)
 	{
 		std::cout << "Please log in to continue. Enter your customer ID:\n";
-		safeIntInputRange(loginID, 0, 9);
+		safeIntInputRange(loginID, 0, customerVector.size() - 1);
 		login(loginID);
 	}
 	// While logged in, provide customer menu
@@ -104,10 +119,10 @@ void Menu::show()
 		int choice;
 		std::cout << "Choose one of the options below by inputting the corresponding number:\n";
 		std::cout << "0: Search for a book and rate\n";
-		std::cout << "1: View book recommendations\n";
+		std::cout << "1: View your top 10 book recommendations\n";
 		std::cout << "2: Log out\n";
 
-		safeIntInputRange(choice, 0, 3);
+		safeIntInputRange(choice, 0, 2);
 
 		switch (choice)
 		{
@@ -211,7 +226,7 @@ void Menu::ui_Search()
 			int inputRating = -1;
 			if (!found)
 			{
-				// If user has not rated the book
+				// If user has not rated the book, let them rate it
 				std::cout << "You have not rated this book. What would you like to rate it (1-5 inclusive)?\n";
 				safeIntInputRange(inputRating, 1, 5);
 				Rating newRating(loginID, inputRating, targetISBN);
@@ -220,7 +235,8 @@ void Menu::ui_Search()
 			else
 			{
 				// This else covers when the user has rated the book and may want
-				// to update their rating
+				// to update their rating, they can keep the same rating by
+				// simply entering the same value
 				std::cout << "You have already rated this book (current rating: " << ratingCheck.rating << ").\n";
 				std::cout << "You can now change your rating if you wish (1-5 inclusive):\n";
 				safeIntInputRange(inputRating, 1, 5);
@@ -234,14 +250,6 @@ void Menu::ui_Search()
 	{
 		std::cout << "There were no matches for your search.\n";
 	}
-}
-
-void Menu::ui_Rate()
-{
-	// Maybe we will keep rating code in search
-	// I'm not sure we need a separate rating option in the menu
-	// as either way, you will have to search for the book to
-	// rate it
 }
 
 void Menu::ui_Recommendations()
@@ -266,15 +274,17 @@ void Menu::ui_Recommendations()
 				// Weight = (4 - |your rating - their rating|)^2
 				// This will give 0 when there is the max difference in rating ((4 - (5 - 1))^2 = 0)
 				// and will give largest value when same score is given ((4 - (5 - 5))^2 = 16)
-				// 
 				weight.weight += pow((4 - std::abs((loginIDRatings[j].rating - ratingBST[i].find(loginIDRatings[j].book_ID)->rating))), 2.0);
 			}
 		}
 		weightQueue.push(weight);
 	}
+	// makeListOfRecs() will stop after 10 recommendations have been added
+	// In the case that we never reach 10 recommendations, we will stop
+	// once the weightQueue is empty (once all possibilities have been tried)
 	while (!weightQueue.empty())
 	{
-		recommendationsList = ratingBST[loginID].makeListOfRecsWrapper(ratingBST[weightQueue.top().customer_ID]);
+		recommendationsList = ratingBST[weightQueue.top().customer_ID].makeListOfRecsWrapper(ratingBST[loginID]);
 		weightQueue.pop();
 	}
 	// Output the list of recommendations

@@ -64,6 +64,9 @@ struct Rating
 	friend ostream& operator<<(ostream& os, const Rating& r);
 };
 
+// We want to be able to output the Rating struct,
+// so this lets us do that in the proper manner
+// This is used to format the Ratings for saving to ratings.txt
 ostream& operator<<(ostream& os, const Rating& r)
 {
 	os << r.customer_ID << ", " << r.rating << ", " << r.book_ID;
@@ -185,6 +188,8 @@ list<string> recommendationsList;
 // Populate the binary search trees of ratings with the ratings from specified file
 void populateRatingBST(const string& source, const int& loginID)
 {
+	// We want the ratingBST vector to have an index for every customer
+	// so we push a BST into ratingBST until its size matches customerVector
 	while (ratingBST.size() < customerVector.size())
 	{
 		Binary_Search_Tree<Rating> bst;
@@ -199,6 +204,9 @@ void populateRatingBST(const string& source, const int& loginID)
 
 		while (getline(ifs, line))
 		{
+			// This regex matches (integer, integer, integer)
+			// we then create a Rating from that and insert it into ratingBST
+			// as well as loginIDRatings if the rating belongs to the logged in user
 			regex re("([0-9]+), ([0-9]+), ([0-9]+)");
 			smatch match;
 			if (regex_search(line, match, re) && match.size() > 1)
@@ -247,6 +255,8 @@ void saveNewRatings(const string& source)
 	{
 		for (int i = 0; i < ratingBST.size(); ++i)
 		{
+			// We are using to_string_noNull() instead of to_string()
+			// because we do not want to put NULL values into ratings.txt
 			ofs << ratingBST[i].to_string_noNull();
 		}
 		ofs.close();
